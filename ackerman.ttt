@@ -6,9 +6,7 @@ function sysCall_init()
 
 sim = require('sim')
 
-    --------------------------------------------------
-    -- ROBOT OBJECTS
-    --------------------------------------------------
+   
 
 base = sim.getObject('/base_link_respondable')
 
@@ -20,9 +18,7 @@ frSteer = sim.getObject('/front_right_steering_joint')
   rlWheel = sim.getObject('/rear_left_wheel_joint')
    rrWheel = sim.getObject('/rear_right_wheel_joint')
 
-    --------------------------------------------------
-    -- SETTINGS
-    --------------------------------------------------
+    
 
   wheelRadius = 0.06
     speed = 0.20
@@ -31,26 +27,19 @@ frSteer = sim.getObject('/front_right_steering_joint')
   steerSign = 1
     driveSign = 1
 
-    --------------------------------------------------
-    -- TARGET IN INITIAL ROBOT COORDINATES
-    --------------------------------------------------
+   
 
    xTarget = 2.0
     yTarget = 0.0
 
-    --------------------------------------------------
-    -- INITIAL POSITION AND HEADING
-    --------------------------------------------------
+   
 
   startPos = sim.getObjectPosition(base, -1)
 
   local o = sim.getObjectOrientation(base, -1)
     startHeading = o[3]
 
-    --------------------------------------------------
-    -- WHEEL GEOMETRY
-    -- Assumes local +X is forward and +Y is left.
-    --------------------------------------------------
+   
 
   local function pos(h)
         return sim.getObjectPosition(h, base)
@@ -90,9 +79,7 @@ function sysCall_actuation()
         return
     end
 
-    --------------------------------------------------
-    -- TARGET POSITION IN WORLD COORDINATES
-    --------------------------------------------------
+  
 
   local targetWorldX =
         startPos[1]
@@ -111,9 +98,7 @@ function sysCall_actuation()
 
   local distance = math.sqrt(ex * ex + ey * ey)
 
-    --------------------------------------------------
-    -- STOP AT THE TARGET
-    --------------------------------------------------
+  
 
   if distance < 0.10 then
         targetReached = true
@@ -123,10 +108,7 @@ function sysCall_actuation()
         return
     end
 
-    --------------------------------------------------
-    -- TARGET IN CURRENT ROBOT FRAME
-    --------------------------------------------------
-
+  
    local o = sim.getObjectOrientation(base, -1)
     local heading = o[3]
 
@@ -138,9 +120,7 @@ function sysCall_actuation()
         -ex * math.sin(heading)
         + ey * math.cos(heading)
 
-    --------------------------------------------------
-    -- STRAIGHT-LINE MODE
-    --------------------------------------------------
+ 
 
   if math.abs(yTarget) < 0.001 then
 
@@ -165,9 +145,6 @@ function sysCall_actuation()
         return
     end
 
-    --------------------------------------------------
-    -- PURE-PURSUIT STEERING
-    --------------------------------------------------
 
     -- Do not steer toward a target behind the rover.
     -- Stop rather than rotate indefinitely in place.
@@ -191,9 +168,7 @@ function sysCall_actuation()
         math.min(maxSteer, delta)
     )
 
-    --------------------------------------------------
-    -- ACKERMANN STEERING ANGLES
-    --------------------------------------------------
+ 
 
    local leftAngle = 0
     local rightAngle = 0
@@ -241,9 +216,6 @@ function setSteering(left, right)
 end
 
 
---------------------------------------------------
--- WHEEL SPEED CONTROL
---------------------------------------------------
 
 function setSpeed(v)
 
@@ -257,9 +229,7 @@ function setSpeed(v)
 end
 
 
---------------------------------------------------
--- STOP ALL WHEELS
---------------------------------------------------
+
 
 function stopRobot()
 
